@@ -3,6 +3,12 @@ This repository holds code for an ecm containing 2rc elements. The goal of this 
 
 Currently, the model is start-parametrized to represent an 2014 VW e-Golf.
 
+## Dependencies
+* Docker 
+
+Inside the docker, we use:
+* python 3.8
+* Packages: pandas flask gevent gunicorn matplotlib wheel pymongo psutil scipy requests
 
 ## Basic functionality
 The model is encapsulated in a docker container and can be built as this.
@@ -18,24 +24,29 @@ Run fit(): Evoke the model endpoint *rc_model/fit* using a POST message containi
 	voltage: [],
 	current: [],
 	timestamps: [],
-	temperature: float
+	temperature: float,
+	fit_level: Either "CELL" or "SYSTEM"
 	}`
-An example dataset [can be found here](example_data.md).
+
+An example dataset [can be found here](example_data.md). Note that the cell level data hast to be in Ampere and Millivolt, the pack level data hast to be in Ampere and Volts!
 
 Run infer(): Evoke the model endpoint *rc_model/infer* by a POST after calling fit(). The model uses the parameters estimated in fit() before. No parameters needed.
 
 Stop and delete the container:`$ sudo docker stop ecm && sudo docker rm ecm`
 
 ### http://container_ip:5000/rc_model/fit
-Using the fit function, the model can be fit to a voltage timeseries. Therefore, the voltage, current and a timestamp vector are needed. The time resolution of the data hat do be at least 5 Hz.
+Using the fit function, the model can be fit to a voltage timeseries. Therefore, the voltage, current and a timestamp vector are needed. The time resolution of the data hat do be at least 5 Hz. The container ip is most likely localhost (127.0.0.1) when running on your system. Adapt, when running remote.
 
 ### http://container_ip:5000/rc_model/infer
 Using infer, the model takes the in fit() generated model parameters and infers an internal resistance after 10s from the model. To do so, the model is excited using a syntetic 50 A current signal. The voltage answer of the model is taken after 10s and a Ri is calculated from this.
 
 ## Model
 The image shows the circuit implemented in the model. All parameters shown can be fitted by the model, having the V_k and the current as input. 
-![ecm cuircuit](images/ecm_sk.png "ECM circuit")
 
+<img src="images/ecm_sk.png" alt="ECM circuit" width="400"/>
+
+## Docker environment
+The model is encapsulated into a docker container. Base image is ubuntu 20.04, as also the development system was. Using flask from the python side, a gunicorn server serves for dsitributing the load and manages workers. As a default, 8 workers are defined. Check wsgi.py to change this.
 
 ### Publication
 Find here if published
