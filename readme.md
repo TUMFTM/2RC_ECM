@@ -50,3 +50,6 @@ The model is encapsulated into a docker container. Base image is ubuntu 20.04, a
 
 ### Publication
 Find here if published
+
+### Contact
+lukas.merkle@tum.de
