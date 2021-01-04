@@ -4,7 +4,7 @@ This repository holds code for an ecm containing 2rc elements. The goal of this 
 Currently, the model is start-parametrized to represent an 2014 VW e-Golf.
 
 
-## Basic functionality
+## Basic functionality and Quickstart
 The model is encapsulated in a docker container and can be built as this.
 
 get into the dockerimage folder: `$ cd dockerimage`
