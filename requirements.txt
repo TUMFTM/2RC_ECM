@@ -1,0 +1,10 @@
+pandas
+flask
+gevent
+gunicorn
+matplotlib
+wheel
+pymongo
+psutil
+scipy
+requests
