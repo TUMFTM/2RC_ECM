@@ -1,3 +1,7 @@
+__author__ = "Lukas Merkle"
+__copyright__ = "Copyright 2020, 31.07.20"
+__email__ = 'lukas.merkle@tum.de'
+
 import numpy as np
 from ocv_soc_rel import OCV_SOC_REL
 import matplotlib.pyplot as plt
@@ -13,132 +17,19 @@ import multiprocessing
 from multiprocessing import Pool
 import glob
 
-VERBOSE = 1
+VERBOSE = 0
 flag_save = False
 
 def load_data():
-    ##################################################################
-    # Window-Size
-    ##################################################################
-    window_size = 300
+    '''
+    PLACEHOLDER
 
-    ##################################################################
-    # Load Kreibich Data
-    ##################################################################
-    # # i muss nicht negiert werden!
-    # # Result file name
-    #path = "../spielwiese/eGolf/Messfahrten_kreibichrunde/fahrt_011.json"
-    #raw = json.load(open(path, "r"))
-    #file_name = os.path.split(path)[1].split(".")[0]
-    #raw_hv_voltage = raw["Spannungen"]["Spannung_Batteriepack"]
-    #raw_hv_current = raw["Stroeme"]["Strom_Batterie"]
-    #n_windows = int(np.floor(len(raw_hv_voltage)/window_size))
-    #
-    #df_measures = []
-    #for w in range(0, n_windows):
-    #
-    #    hv_voltage = [x[1] for x in raw_hv_voltage][w*window_size:(w+1)*window_size]
-    #    hv_voltage_time = [x[0] for x in raw_hv_voltage][w*window_size:(w+1)*window_size]
-    #    hv_current = [x[1] for x in raw_hv_current][w*window_size:(w+1)*window_size]
-    #    hv_current_time = [x[0] for x in raw_hv_current][w*window_size:(w+1)*window_size]
-    #
-    #    df_current = pd.DataFrame({"current": hv_current}, index=hv_current_time)
-    #    df_voltage = pd.DataFrame({"voltage": hv_voltage}, index=hv_voltage_time)
-    #
-    #    df_voltage = df_voltage.reindex(index=df_current.index, method="nearest")
-    #    df_measure = df_current.merge(df_voltage, left_index=True, how="outer", right_index=True)
-    #    df_measure.index = df_measure.index - df_measure.index[0]
-    #    df_measure.index = pd.to_datetime(df_measure.index, unit="s")
-    #
-    #    # Resample
-    #    df_measure = df_measure.dropna(axis="index")
-    #    df_measure = df_measure.resample("200ms").mean()
-    #    dt = 0.2
-    #
-    #    # add idx
-    #    df_measure["idx"] = w
-    #
-    #    # Append to general list
-    #    df_measures.append(df_measure)
-    #
-    #    if VERBOSE > 0:
-    #        plt.figure()
-    #        plt.title("kreibich data")
-    #        df_measure["current"].plot()
-    #        df_measure["voltage"].plot()
-    #df_measures
-    ###################################################################
-    # Load Data from cell_rotator --> Automatically recorded
-    ##################################################################
-     # i muss nicht negiert werden!
-    # path = "../../IoT/eGolf/egolf_cell_rotator/data"
-    # file_name = "cycles_30s_hv_total"
-    # files = glob.glob(path+"/cycles_30s_hv_total*")
-    # df_measures = []
-    # counter=0
-    # for idx, file in enumerate(files):
-    
-    #    raw_data = pickle.load(open(file, "rb"))
-    #    for idx2, rot in enumerate([4,9,14,19]):
-    #        counter+=1
-    #        label_current = 7741
-    #        label_voltage = 7739
-    #        df_measure = copy.copy(raw_data[rot]["data"][[label_current, label_voltage]])
-    #        df_measure["voltage"] = df_measure[7739]
-    #        df_measure["current"] = df_measure[7741]
-    #        df_measure["idx"] = counter
-    
-    #        # Resample
-    #        df_measure = df_measure.dropna(axis="index")
-    #        df_measure = df_measure.resample("200ms").mean()
-    #        dt = 0.2
-    
-    #        df_measures.append(df_measure)
-    
-    #        if VERBOSE > 0:
-    #            plt.figure()
-    #            plt.title("cell rollator")
-    #            df_measure["current"].plot(label="roll curr")
-    #            df_measure["voltage"].plot(label="roll volt")
-    
-    # df_measures
-    # df_measures
+    If you want to simulate your own data NOT using the docker interface, you can implement data loading here.
+    '''
 
-    ##################################################################
-    # Load National Laboratory Data
-    ##################################################################
-    file_name = "national_lab.p"
-    dataset = "../../spielwiese/eGolf/All_Data-2015_VW_Egolf/61511020 Test Data.txt"
-    file_name = "national_lab_" + os.path.split(dataset)[1]
-    df = pd.read_csv(dataset, sep='\t')
-    hv_current_time = df["Time[sec]"]
-    hv_voltage_time = df["Time[sec]"]
-    hv_current = df["HV_Battery_Current[A]"]
-    hv_voltage = df["HV_Battery_Voltage[V]"]
-
-    n_windows = int(np.floor(len(hv_voltage_time)/window_size))
-
-    df_measures = []
-    for w in range(0, n_windows):
-
-        df_measure = pd.DataFrame()
-        df_measure["current"] = hv_current[w*window_size:(w+1)*window_size]
-        df_measure["voltage"] = hv_voltage[w*window_size:(w+1)*window_size]
-        df_measure.index = pd.to_datetime(hv_voltage_time[w * window_size:(w + 1) * window_size], unit="s")
-        df_measure["idx"]=w
-
-        # Resample
-        df_measure = df_measure.dropna(axis="index")
-        df_measure = df_measure.resample("200ms").mean()
-        dt = 0.2
-
-        df_measures.append(df_measure)
-
-        if VERBOSE > 0:
-            plt.figure()
-            plt.title("National lab data")
-            df_measure["current"].plot()
-            df_measure["voltage"].plot()
+    df_measures = pd.DataFrame()
+    file_name = ""
+    dt = 0.2
 
     return df_measures, file_name, dt
 
@@ -160,38 +51,12 @@ ocv_soc_rel_discharge   = OCV_SOC_REL(direction="discharge", vehicle="eGolf", ag
 ocv_soc_rel_charge      = OCV_SOC_REL(direction="charge", vehicle="eGolf", aging_factor_capacity=aging_factor_capacity)
 ocv_soc_rel_mean        = OCV_SOC_REL(direction="mean", vehicle="eGolf", aging_factor_capacity=aging_factor_capacity)
 
-# Parameters
-# Startparameterset for mostly running into xtol
-def get_start_parameter():
-    # f=1
-    # r0_min = 0.01
-    # R0 = 0.2
-    # r0_max = 0.3
-    #
-    # r1_min = f* 0
-    # R1 = f* 0.01
-    # r1_max = f* np.inf
-    #
-    # c1_min = 0
-    # C1 = 120
-    # c1_max= np.inf
-    #
-    # r2_min = f* 0
-    # R2 = f* 0.01
-    # r2_max = f* np.inf
-    #
-    # c2_min= 0
-    # C2 = 1000
-    # c2_max = np.inf
-    #
-    # start_soc_min= 0.01
-    # start_soc= 0.5
-    # start_soc_max=1
-    #
-    # capacity_min=50
-    # capacity=74
-    # capacity_max=80
 
+def get_start_parameter():
+    '''
+    Parameters
+    - Startparameterset for mostly running into xtol
+    '''
     f = 1
     r0_min = 0.01
     R0 = 0.2
@@ -232,15 +97,6 @@ def get_defined_input_current(length_input, dt):
     :return: defined input step
     '''
     n = 500
-    # # Fake EIS Current input
-    # fake_index = pd.date_range(start="1.1.2018 00:00:00", end="1.1.2018 01:00:00", freq="0.5S")
-    # excitation= np.zeros(fake_index.size, )
-    # f=0.1  # 1/s
-    # excitation = np.sin([x * 2 * np.pi * f for x in list(range(0, len(fake_index)))])
-    # i_fake = pd.Series(excitation, index=fake_index)
-    #
-    # return
-
     # Simulate Step
     i_step = np.zeros((int(length_input), 1))
     delta_ampere = 200  # 200A step
@@ -350,9 +206,6 @@ def simulate(i, R0, R1, C1, R2, C2, start_soc, capacity, dt, **kwargs):
     return U_OCV
 
 def simulate_residuals(x, i, v, dt):
-
-    # x_scale = np.array([1 / 2.12022750e-03, 1 / 0.0001, 1 / 100, 1 / 0.0001, 1 / 1.00008383e+04])
-    # x = np.array(x) / x_scale
 
     erg = simulate(i, x[0], x[1], x[2], x[3], x[4], x[5], x[6], dt)
     return v - erg
@@ -583,20 +436,6 @@ def fit(df_measure, file_name, dt):
     re = lambda R0, R1, C1, R2, C2, f: R0 +  ((R1) / (1+(2*np.pi*f*R1*C1)**2)) + ((R2) / (1+(2*np.pi*f*R2*C2)**2))
     im = lambda R0, R1, C1, R2, C2, f:(2*np.pi*f*C1*(R1**2)) / ((1+(2*np.pi*f*R1*C1)**2)) + (2*np.pi*f*C2*(R2**2)) / ((1+(2*np.pi*f*R2*C2)**2))
 
-    # if VERBOSE > 0:
-    #     plt.figure()
-    #     for idx,f in enumerate(log_space.tolist()):
-    #         re_ = re(*res_1.x, f)
-    #         im_ = im(*res_1.x, f)
-    #         #print("Freq: {}, re: {}, im: {}".format(f, re_, im_))
-    #         plt.scatter(re_, im_)
-    #         if idx % 10 == 0:
-    #             plt.annotate(round(f, 3), (re_, im_))
-    #
-    #     plt.grid()
-    #     plt.xlabel("ReZ Real")
-    #     plt.ylabel("-ImZ Imaginary")
-    #
     if VERBOSE > 0:
         plt.show()
     print("Duration single fit: {}s".format(time.time() - fit_start_t))
@@ -622,6 +461,11 @@ def inference_Ri(fitted_params, i=None, dt=0.2, start_soc=0.5, **kwargs):
 
 
 if __name__ == "__main__":
+
+    '''
+    Only needed, if you want to run against local data without the docker container
+    '''
+
     # for idx, df_measure in enumerate(df_measures):
     df_measures, file_name, dt= load_data()
     ts = time.time()

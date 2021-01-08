@@ -1,3 +1,7 @@
+__author__ = "Lukas Merkle"
+__copyright__ = "Copyright 2020, 31.07.20"
+__email__ = 'lukas.merkle@tum.de'
+
 import model_fitting_2rc_system
 import model_fitting_2rc_automated_soc as model_fitting_2rc_cell
 from flask import Flask, request, Response

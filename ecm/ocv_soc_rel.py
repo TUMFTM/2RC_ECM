@@ -1,3 +1,7 @@
+__author__ = "Lukas Merkle"
+__copyright__ = "Copyright 2020, 31.07.20"
+__email__ = 'lukas.merkle@tum.de'
+
 import pandas as pd
 import numpy as np
 import json
@@ -230,18 +234,3 @@ class OCV_SOC_REL():
         # interpolation to get the c value
         c = np.interp(ocv, self.df_OCV_SOC["OCV_System"], self.df_OCV_SOC["Capacity_Module"])
         return c
-
-#
-# c = OCV_SOC_REL(direction="charge", vehicle="eGolf")
-#
-# print(c.get_soc_from_ocv_cell(4.1))
-# print(c.get_ocv_from_soc_cell(0.20))
-# print(c.get_ocv_from_soc_module(0.20))
-# print(c.get_ocv_from_capacity_cell(23))
-# print(c.get_soc_from_capacity_cell(23))
-# print(c.get_soc_from_capacity_system(23))
-#
-# print("-------------- discharge-------------")
-# c = OCV_SOC_REL(direction="discharge")
-# print(c.get_capacity_from_ocv_system(815))
-# print(c.get_soc_from_capacity_system(60))

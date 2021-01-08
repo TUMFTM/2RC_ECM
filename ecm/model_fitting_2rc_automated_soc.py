@@ -1,11 +1,7 @@
-"""
-Author Merkle 2020
+__author__ = "Lukas Merkle"
+__copyright__ = "Copyright 2020, 31.07.20"
+__email__ = 'lukas.merkle@tum.de'
 
-This is an optimized version of the 2rc model CELL-LEVEL for eGolf.
-
-Main diffrerence: In addition to the old version, there is an soc and capacity estimator integrated.
-
-"""
 import numpy as np
 from ocv_soc_rel import OCV_SOC_REL
 import time
@@ -15,44 +11,18 @@ import pickle
 import os
 import matplotlib.pyplot as plt
 
-# Definition to load the data
+
 def load_data():
-#    path = "C:\\Users\\ga63hez\\Documents\\obd_battery_status_detection\\battery_status_detection\\driving\\testdata\\battery_model\\data_recorded\\cycles_Kreibichrunde_03.02.2020.p"
-#    path = "C:\\Users\\ga63hez\\Documents\\obd_battery_status_detection\\battery_status_detection\\driving\\testdata\\battery_model\\data_recorded\\battery_model_Kreibichrunde_1.p"
-#     path = "data_recorded/correct_current/cycles_Kreibichrunde_03.02.2020_battery_model_Kreibichrunde_1_merged.p"
-#     path = "data_recorded/cycles_Kreibichrunde_03.02.2020_battery_model_Kreibichrunde_1_merged.p"
-#     path = "data_recorded/merkle_cycles_30s_hv_total_all_cells_2.p"
-    # path = "data_recorded/merkle_cycles_30s_hv_total_all_cells_1.p"
+    '''
+    PLACEHOLDER
 
+    If you want to simulate your own data NOT using the docker interface, you can implement data loading here.
+    '''
 
-    # path = "/home/ga36raf/Documents/obd_battery_status_detection/battery_status_detection/driving/testdata/analysis_internal_resistance/data_recorded/correct_current/record_internal_resistance_Kreibichrunde_50A_30j_chosen_cells.p"
-    # path = "/home/ga36raf/Documents/obd_battery_status_detection/battery_status_detection/driving/testdata/analysis_internal_resistance/data_recorded/correct_current/record_internal_resistance_Kreibichrunde_50A_30j_chosen_cells_recording_rate_motorway.p"
-    # path = "/home/ga36raf/Documents/obd_battery_status_detection/battery_status_detection/driving/testdata/analysis_internal_resistance/data_recorded/correct_current/record_internal_resistance_Kreibichrunde_50A_30j_1.p"
-
-
-    # correct_current
-    # path = "/home/ga36raf/automotiveCloud/IoT/eGolf/egolf_cell_rotator/data/correct_current/cycles_30s_hv_total_all_cells_1.p"
-    # path = "/home/ga36raf/automotiveCloud/IoT/eGolf/egolf_cell_rotator/data/correct_current/cycles_30s_hv_total_all_cells_2.p"
-    # path="/home/ga36raf/automotiveCloud/IoT/eGolf/egolf_cell_rotator/data/cycles_10s_stromkorrekt_hv_total_all_cells_3.5.p"
-    # path="/home/ga36raf/automotiveCloud/IoT/eGolf/egolf_cell_rotator/data/cycles_10s_stromkorrekt_hv_total_all_cells_3.p"
-    # path="/home/ga36raf/Documents/obd_battery_status_detection/battery_status_detection/driving/testdata/battery_model/data_recorded/correct_current/cycles_Kreibichrunde_03.02.2020_battery_model_Kreibichrunde_1_merged.p"
-    # path="/home/ga36raf/automotiveCloud/IoT/eGolf/egolf_cell_rotator/data/correct_current/cycles_150s_hv_chosen_cells_1.p"
-    path="/home/ga36raf/automotiveCloud/IoT/eGolf/egolf_cell_rotator/data/correct_current/cycles_15s_hv_7744_7750_1.p"
-
-    raw_data = pickle.load(open(path, "rb"))
-    
-    file_name = os.path.split(path)[1] # filename to save the results
-    file_name = file_name +"_lm_opti.p"
-    label_current = uds_id_current_hv    
-    label_voltages = np.array([uds_id_zelle_1,uds_id_zelle_2,uds_id_zelle_3,uds_id_zelle_4,uds_id_zelle_5,uds_id_zelle_6,uds_id_zelle_7,uds_id_zelle_8,uds_id_zelle_9,uds_id_zelle_10,uds_id_zelle_11,uds_id_zelle_12,uds_id_zelle_13,uds_id_zelle_14,uds_id_zelle_15,uds_id_zelle_16,uds_id_zelle_17,uds_id_zelle_18,uds_id_zelle_19,uds_id_zelle_20,uds_id_zelle_21,uds_id_zelle_22,uds_id_zelle_23,uds_id_zelle_24,uds_id_zelle_25,uds_id_zelle_26,uds_id_zelle_27,uds_id_zelle_28,uds_id_zelle_29,uds_id_zelle_30,uds_id_zelle_31,uds_id_zelle_32,uds_id_zelle_33,uds_id_zelle_34,uds_id_zelle_35,uds_id_zelle_36,uds_id_zelle_37,uds_id_zelle_38,uds_id_zelle_39,uds_id_zelle_40,uds_id_zelle_41,uds_id_zelle_42,uds_id_zelle_43,uds_id_zelle_44,uds_id_zelle_45,uds_id_zelle_46,uds_id_zelle_47,uds_id_zelle_48,uds_id_zelle_49,uds_id_zelle_50,uds_id_zelle_51,uds_id_zelle_52,uds_id_zelle_53,uds_id_zelle_54,uds_id_zelle_55,uds_id_zelle_56,uds_id_zelle_57,uds_id_zelle_58,uds_id_zelle_59,uds_id_zelle_60,uds_id_zelle_61,uds_id_zelle_62,uds_id_zelle_63,uds_id_zelle_64,uds_id_zelle_65,uds_id_zelle_66,uds_id_zelle_67,uds_id_zelle_68,uds_id_zelle_69,uds_id_zelle_70,uds_id_zelle_71,uds_id_zelle_72,uds_id_zelle_73,uds_id_zelle_74,uds_id_zelle_75,uds_id_zelle_76,uds_id_zelle_77,uds_id_zelle_78,uds_id_zelle_79,uds_id_zelle_80,uds_id_zelle_81,uds_id_zelle_82,uds_id_zelle_83,uds_id_zelle_84,uds_id_zelle_85,uds_id_zelle_86,uds_id_zelle_87,uds_id_zelle_88]) # if not all cells have been recorded, this line must be updated
-
-
-
-    # resample data to a common dt
-    raw_data = [{"data": x["data"].resample("200ms").mean(), "label": x["label"], "pre": x["pre"], "post":x["post"]} for x in raw_data]
-    raw_data = [x for x in raw_data if x["label"] in label_voltages]   
+    raw_data = pd.DataFrame()
+    file_name = ""
     dt = 0.2
-
+    label_current="XXXX"
 
     return raw_data, file_name, dt, label_current
 
@@ -69,48 +39,12 @@ ocv_soc_rel_discharge   = OCV_SOC_REL(direction="mean", vehicle="eGolf", aging_f
 ocv_soc_rel_charge      = OCV_SOC_REL(direction="mean", vehicle="eGolf", aging_factor_capacity=aging_factor_capacity)
 ocv_soc_rel_mean        = OCV_SOC_REL(direction="mean", vehicle="eGolf", aging_factor_capacity=aging_factor_capacity)
 
-# Definition to get start parameters
+
 def get_start_parameter():
+    '''
+    Definition to get start parameters
+    '''
     
-    # startparameterset for mostly running into xtol    
-    # r0_min = 0.001
-    # R0 = 0.002
-    # r0_max = 0.008
-    # r1_min = 0.0001
-    # R1 = 0.001
-    # r1_max = 0.01
-    # c1_min = 90
-    # C1 = 100
-    # c1_max = 150
-    # r2_min = 0.0001
-    # R2 = 0.001
-    # r2_max = 0.01
-    # c2_min = 1000
-    # C2 = 1000
-    # c2_max = 5000
-    # ----------------
-    # r0_min = 0.001
-    # R0 = 0.002
-    # r0_max = 0.008
-    # r1_min = 0.0001
-    # R1 = 0.001
-    # r1_max = 0.01
-    # c1_min = 30
-    # C1 = 100
-    # c1_max = 150
-    # r2_min = 0.0001
-    # R2 = 0.001
-    # r2_max = 0.01
-    # c2_min = 1000
-    # C2 = 1000
-    # c2_max = 30000
-    # start_soc_min = 0.01
-    # start_soc = 0.98
-    # start_soc_max = 0.99
-    # CELL_CAPACITY_min = 21
-    # CELL_CAPACITY = 29.9
-    # CELL_CAPACITY_max = 30
-    #-------------------------
     r0_min = 0.0008
     R0 = 0.002
     r0_max = 0.008
@@ -434,11 +368,6 @@ if __name__ == "__main__":
         c = raw_data["label"]
         idx_slice = df_measure[c].notna()
         my_i = df_measure[label_current] / (- PARALLEL_CELLS)
-
-        # smooth i
-        # i_smoother= lambda x: 0 if x<=2 and x>=-2 else x
-        # my_i = my_i.apply(i_smoother)
-
 
         my_u = df_measure[c].loc[idx_slice].values / 1000
         Spannung_Modell = simulate(my_i, *r[0].x, dt = dt, verbose=True)
