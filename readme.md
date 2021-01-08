@@ -51,7 +51,7 @@ The image shows the circuit implemented in the model. All parameters shown can b
 The model is encapsulated into a docker container. The base image is ubuntu 20.04, as also the development system was. Using flask from the python side, a gunicorn server serves for distributing the load and manages workers. As a default, 8 workers are defined. Check wsgi.py to change this. There is a docker-check class included, but not used per default. This can be used to control the docker in cloud environments.
 
 ### Publication
-Find here if published
+Find here when published
 
 ### Contact
 lukas.merkle@tum.de
