@@ -16,6 +16,9 @@ The model is encapsulated in a docker container and can be built as this.
 Quickstart under linux:
 
 get into the docker image folder: `$ cd dockerimage`
+```console
+$ cd dockerimage
+```  
 
 Execute `$ . create_docker.sh` This will copy the files and build the docker container tagging it rc_model. Make sure to have sudo rights to build.
 
