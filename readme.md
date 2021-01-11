@@ -15,23 +15,31 @@ The model is encapsulated in a docker container and can be built as this.
 
 Quickstart under linux:
 
-get into the docker image folder: `$ cd dockerimage`
+get into the docker image folder:
 ```console
 $ cd dockerimage
 ```  
 
-Execute `$ . create_docker.sh` This will copy the files and build the docker container tagging it rc_model. Make sure to have sudo rights to build.
+Execute
+```console
+$ . create_docker.sh
+```  
+This will copy the files and build the docker container tagging it rc_model. Make sure to have sudo rights to build.
 
-Run the container: `$ sudo docker run -p5000:5000 --name ecm ecm_model:latest`. Currently, the port is set to a standard 5000 for flask. If you want to use another port, check ecm/wsgi.py and change it there accordingly.
+Run the container: 
+```console $ sudo docker run -p5000:5000 --name ecm ecm_model:latest```
+Currently, the port is set to a standard 5000 for flask. If you want to use another port, check ecm/wsgi.py and change it there accordingly.
 
 Run fit(): Evoke the model endpoint *rc_model/fit* using a POST message containing data as this:
-`post_data:{
+```console
+post_data:{
 	voltage: [],
 	current: [],
 	timestamps: [],
 	temperature: float,
 	fit_level: Either "CELL" or "SYSTEM"
-	}`
+	}
+```
 
 An example dataset to copy and curl [can be found here](example_data.md). Note that the cell level data hast to be in Ampere and Millivolt, the pack level data hast to be in Ampere and Volts!
 
