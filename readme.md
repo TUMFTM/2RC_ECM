@@ -10,8 +10,10 @@ Inside the docker, we use:
 * python 3.8
 * pip packages: pandas flask gevent gunicorn matplotlib wheel pymongo psutil scipy requests
 
-## Basic functionality and Quickstart
+## Basic Functionality and Quickstart
 The model is encapsulated in a docker container and can be built as this.
+
+Quickstart under linux:
 
 get into the docker image folder: `$ cd dockerimage`
 
