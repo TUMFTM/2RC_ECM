@@ -27,7 +27,9 @@ $ . create_docker.sh
 This will copy the files and build the docker container tagging it rc_model. Make sure to have sudo rights to build.
 
 Run the container: 
-```console $ sudo docker run -p5000:5000 --name ecm ecm_model:latest```
+```console
+$ sudo docker run -p5000:5000 --name ecm ecm_model:latest
+```
 Currently, the port is set to a standard 5000 for flask. If you want to use another port, check ecm/wsgi.py and change it there accordingly.
 
 Run fit(): Evoke the model endpoint *rc_model/fit* using a POST message containing data as this:
