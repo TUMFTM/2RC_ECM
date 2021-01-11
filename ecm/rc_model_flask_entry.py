@@ -202,7 +202,7 @@ def fit():
 
 
 
-@app.route("/rc_model/infer", methods=['POST'])
+@app.route("/rc_model/infer", methods=['POST', 'GET'])
 def infer(**kwargs):
     print("________________________________________________________________________________")
     print("** New Request -----------------------------------------------------------------")
