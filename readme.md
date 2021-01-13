@@ -68,5 +68,10 @@ The model is encapsulated into a docker container. The base image is ubuntu 20.0
 ### Publication
 Find here when published
 
+[Preprint available here](https://www.preprints.org/manuscript/202101.0223/v1) 
+
+Find this [repo on researchgate](https://www.researchgate.net/publication/348431926_Python_2RC_ECM_Battery_Model)\
+[10.13140/RG.2.2.30895.97447](doi.org/10.13140/RG.2.2.30895.97447)
+
 ### Contact
 lukas.merkle@tum.de
