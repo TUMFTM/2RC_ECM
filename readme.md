@@ -65,7 +65,7 @@ The image shows the circuit implemented in the model. All parameters shown can b
 ## Docker environment
 The model is encapsulated into a docker container. The base image is ubuntu 20.04, as also the development system was. Using flask from the python side, a gunicorn server serves for distributing the load and manages workers. As a default, 8 workers are defined. Check wsgi.py to change this. There is a docker-check class included, but not used per default. This can be used to control the docker in cloud environments.
 
-### Publication
+## Publication
 Find here when published
 
 [Preprint available here](https://www.preprints.org/manuscript/202101.0223/v1) 
@@ -73,5 +73,5 @@ Find here when published
 Find this [repo on researchgate](https://www.researchgate.net/publication/348431926_Python_2RC_ECM_Battery_Model)\
 [10.13140/RG.2.2.30895.97447](doi.org/10.13140/RG.2.2.30895.97447)
 
-### Contact
+## Contact
 lukas.merkle@tum.de
